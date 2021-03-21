@@ -25,8 +25,50 @@
 
 
 
-function passwordReset(){
+function passwordReset(input) {
 
+
+
+}
+
+
+
+function TakeOdd(password) {
+    let newPass = ""
+
+    for (let i = 1; i <= password.length; i += 2) {
+        newPass += password[i];
+    }
+
+    console.log(newPass);
+}
+
+function Cut(password, index, length) {
+    let firstPart = password.substring(0, index);
+    let secondPart = password.substring(index, index+length);
+    let thirdPart = password.substring(index+length);
+
+    let result = firstPart + thirdPart;
+
+    console.log(result);
+}
+
+function Substitute(password, toReplace, char){
 
     
+    //console.log(password.replaceAll(toReplace, char));
+
 }
+
+Substitute(`icecream::hot::mer`, `::`, `-`);
+
+
+
+passwordReset([
+    'Siiceercaroetavm!:?:ahsott.:i:nstupmomceqr ',
+    'TakeOdd',
+    'Cut 15 3',
+    'Substitute :: -',
+    'Substitute | ^',
+    'Done'
+]);
