@@ -27,7 +27,25 @@
 
 function passwordReset(input) {
 
+    let password = input.shift();
 
+    input.forEach(line => {
+        if(line !== "Done"){
+            let [command, ...tokens] = line.split(" ");
+            if(command === "TakeOdd"){
+                password = password.filter((s , i) => i % 2 !== 0).join("");
+            }else if(command === "Cut"){
+                let index = Number(tokens[0]);
+                let length = Number(tokens[1]);
+
+                let substring = password.substring(index, index+length);
+                password = password.replace(substring, '');
+            }else if(command === "Substitute"){
+                let [substring, substitute] = tokens;
+                password = password.replace(new RegExp(`${substring}`, 'g'), substitute);
+            }
+        }
+    })
 
 }
 
@@ -55,8 +73,8 @@ function Cut(password, index, length) {
 
 function Substitute(password, toReplace, char){
 
-    
-    //console.log(password.replaceAll(toReplace, char));
+    password = password.replace(toReplace, char);
+    console.log(password);
 
 }
 
