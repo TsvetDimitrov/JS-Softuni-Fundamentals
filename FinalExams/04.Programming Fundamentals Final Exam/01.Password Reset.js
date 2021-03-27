@@ -33,52 +33,59 @@ function passwordReset(input) {
         if(line !== "Done"){
             let [command, ...tokens] = line.split(" ");
             if(command === "TakeOdd"){
-                password = password.filter((s , i) => i % 2 !== 0).join("");
+                password = [...password].filter((s , i) => i % 2 !== 0).join("");
+                console.log(password);
             }else if(command === "Cut"){
                 let index = Number(tokens[0]);
                 let length = Number(tokens[1]);
 
                 let substring = password.substring(index, index+length);
                 password = password.replace(substring, '');
+                console.log(password);
             }else if(command === "Substitute"){
                 let [substring, substitute] = tokens;
-                password = password.replace(new RegExp(`${substring}`, 'g'), substitute);
+                if(password.includes(substring)){
+                    password = password.replace(new RegExp(`${substring}`, 'g'), substitute);
+                    console.log(password);
+                }else{
+                    console.log("Nothing to replace!");
+                }
             }
         }
     })
-
+    console.log(`Your password is: ${password}`);
 }
 
 
 
-function TakeOdd(password) {
-    let newPass = ""
+// function TakeOdd(password) {
+//     let newPass = ""
 
-    for (let i = 1; i <= password.length; i += 2) {
-        newPass += password[i];
-    }
+//     for (let i = 1; i <= password.length; i += 2) {
+//         newPass += password[i];
+//     }
 
-    console.log(newPass);
-}
+//     console.log(newPass);
+// }
 
-function Cut(password, index, length) {
-    let firstPart = password.substring(0, index);
-    let secondPart = password.substring(index, index+length);
-    let thirdPart = password.substring(index+length);
+// function Cut(password, index, length) {
+//     let firstPart = password.substring(0, index);
+//     let secondPart = password.substring(index, index+length);
+//     let thirdPart = password.substring(index+length);
 
-    let result = firstPart + thirdPart;
+//     let result = firstPart + thirdPart;
 
-    console.log(result);
-}
+//     console.log(result);
+// }
 
-function Substitute(password, toReplace, char){
+// function Substitute(password, toReplace, char){
 
-    password = password.replace(toReplace, char);
-    console.log(password);
+//     password = password.replace(toReplace, char);
+//     console.log(password);
 
-}
+// }
 
-Substitute(`icecream::hot::mer`, `::`, `-`);
+// Substitute(`icecream::hot::mer`, `::`, `-`);
 
 
 
