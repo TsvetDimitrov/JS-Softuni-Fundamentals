@@ -41,36 +41,124 @@
 // will never be negative or exceed the respective limits.
 // •	The town names in the events will always be valid towns that should be on your list.
 
-
-
-
-
-
-
 function pirates(input) {
+    let cities = {};
+    let line;
+
+    while ((line = input.shift()) !== "Sail") {
+        let [city, population, gold] = line.split("||");
+        population = Number(population);
+        gold = Number(gold);
+
+        if (!cities.hasOwnProperty(city)) {
+            cities[city] = { population: 0, gold: 0 }
+        }
+
+        cities[city].population += population;
+        cities[city].gold += gold;
+    }
+    
+
+
+    while ((line = input.shift()) !== "End") {
+        let [command, town, ...args] = line.split("=>");
+
+        if (command === "Plunder") {
+            let [people, gold] = args;
+            people = Number(people);
+            gold = Number(gold);
+
+            cities[town].population -= people;
+            cities[town].gold -= gold;
+            console.log(`${town} plundered! ${gold} gold stolen, ${people} citizens killed.`);
+
+            if (cities[town].population <= 0 || cities[town].gold <= 0) {
+
+                delete cities[town];
+                console.log(`${town} has been wiped off the map!`);
+            }
+        } else if (command === "Prosper") {
+            let gold = args;
+            gold = Number(gold);
+
+            if (gold < 0) {
+                console.log(`Gold added cannot be a negative number!`);
+            } else {
+                cities[town].gold += gold;
+                console.log(`${gold} gold added to the city treasury. ${town} now has ${cities[town].gold} gold.`);
+            }
+        }
+    }
+
+    let sortedCities = Object.entries(cities).sort(sortingCities);
+    if(sortedCities.length === 0){
+        console.log("Ahoy, Captain! All targets have been plundered and destroyed!")
+    }else{
+        console.log(`Ahoy, Captain! There are ${sortedCities.length} wealthy settlements to go to:`)
+        for (let town of sortedCities) {
+            console.log(`${town[0]} -> Population: ${town[1].population} citizens, Gold: ${town[1].gold} kg`);
+        }
+    }
+    
+    
+    function sortingCities(a, b){
+        let [aName, aInfo] = a;
+        let [bName, bInfo] = b;
+
+        let sortedByGold = bInfo.gold - aInfo.gold;
+
+        if(sortedByGold === 0){
+            return aName.localeCompare(bName);
+        }
+
+        return sortedByGold;
+    }
+}
+
+
+
+
+
+
+
+
+pirates([
+    'Tortuga||345000||1250',
+    'Santo Domingo||240000||630',
+    'Havana||410000||1100',
+    'Sail',
+    'Plunder=>Tortuga=>75000=>380',
+    'Prosper=>Santo Domingo=>180',
+    'End'
+  ]);
+
+
+  // Another Solution
+
+function piratesSolution1(input) {
     let actions = {
         Plunder(towns, townName, people, gold) {
             let town = towns[townName];
             town.population -= Number(people);
             town.gold -= Number(gold);
-        
+
             console.log(`${townName} plundered! ${gold} gold stolen, ${people} citizens killed.`);
-        
+
             if (town.population <= 0 || town.gold <= 0) {
                 console.log(`${townName} has been wiped off the map!`);
                 delete towns[townName];
             }
         },
-        
+
         Prosper(towns, townName, gold) {
-        
+
             let town = towns[townName];
-            if(Number(gold) > 0 ){
+            if (Number(gold) > 0) {
                 town.gold += Number(gold);
                 console.log(`${gold} gold added to the city treasury. ${townName} now has ${town.gold} gold.`);
-            }else{
+            } else {
                 console.log(`Gold added cannot be a negative number!`);
-            } 
+            }
         }
     }
     let towns = {}
@@ -78,20 +166,20 @@ function pirates(input) {
 
 
 
-    while((line = input.shift()) != "Sail"){
+    while ((line = input.shift()) != "Sail") {
         let [townName, population, gold] = line.split("||");
 
-        if(!towns.hasOwnProperty(townName)){
-            towns[townName] = {population: 0, gold: 0};
+        if (!towns.hasOwnProperty(townName)) {
+            towns[townName] = { population: 0, gold: 0 };
         }
 
         towns[townName].population += Number(population);
         towns[townName].gold += Number(gold);
     }
 
-    while((line = input.shift())!= "End"){
+    while ((line = input.shift()) != "End") {
         let [actionName, townName, ...args] = line.split("=>");
-        
+
 
         let action = actions[actionName];
         action(towns, townName, ...args);
@@ -100,43 +188,27 @@ function pirates(input) {
 
     let sorted = Object.entries(towns).sort(compareTowns);
 
-    if(sorted.length > 0){
+    if (sorted.length > 0) {
         console.log(`Ahoy, Captain! There are ${sorted.length} wealthy settlements to go to:`);
 
         for (let town of sorted) {
             console.log(`${town[0]} -> Population: ${town[1].population} citizens, Gold: ${town[1].gold} kg`)
         }
-    }else{
+    } else {
         console.log(`Ahoy, Captain! All targets have been plundered and destroyed!`);
     }
 
-    function compareTowns([nameA, townA], [nameB, townB]){
+    function compareTowns([nameA, townA], [nameB, townB]) {
         return townB.gold - townA.gold || nameA.localeCompare(nameB);
     }
 }
 
-pirates([
-    'Nassau||95000||1000',
-    'San Juan||930000||1250',
-    'Campeche||270000||690',
-    'Port Royal||320000||1000',
-    'Port Royal||100000||2000',
-    'Sail',
-    'Prosper=>Port Royal=>-200',
-    'Plunder=>Nassau=>94000=>750',
-    'Plunder=>Nassau=>1000=>150',
-    'Plunder=>Campeche=>150000=>690',
-    'End'
-  ]);
-
-
-
-  //another solution:
+//another solution:
 
 
 
 
-  function piratesTEST(input) {
+function piratesTEST(input) {
     let citiesMap = {}
 
 
@@ -153,6 +225,7 @@ pirates([
             citiesMap[cityName] = { gold, people }
         }
     }
+
     input.shift();
 
 
@@ -191,9 +264,9 @@ pirates([
 
     let sortedCities = Object.entries(citiesMap).sort(sortCities);
 
-    if(sortedCities.length === 0){
+    if (sortedCities.length === 0) {
         console.log("Ahoy, Captain! All targets have been plundered and destroyed!");
-    }else{
+    } else {
         console.log(`Ahoy, Captain! There are ${sortedCities.length} wealthy settlements to go to:`);
 
 
@@ -204,7 +277,7 @@ pirates([
         }
     }
 
-    function sortCities(a, b){
+    function sortCities(a, b) {
         let [aCityName, aCityInfo] = a;
         let [bCityName, bCityInfo] = b;
 
@@ -212,7 +285,7 @@ pirates([
         let result = bCityInfo.gold - aCityInfo.gold;
 
 
-        if(result === 0){
+        if (result === 0) {
             return aCityName.localeCompare(bCityName);
         }
 

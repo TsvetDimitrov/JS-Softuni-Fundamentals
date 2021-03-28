@@ -26,10 +26,75 @@
 // •	After the "Generate" command is received, print:
 // o	"Your activation key is: {activation key}"
 
+function activationKeys(input){
+    let rawKey = input.shift();
 
-function keys(input) {
+    let line;
+    while((line = input.shift()) !== "Generate"){
+        let [command, ...args] = line.split(">>>");
+
+        if(command === "Contains"){
+            let substring = args;
+            if(rawKey.includes(substring)){
+                console.log(`${rawKey} contains ${substring}`);
+            }else{
+                console.log("Substring not found!");
+            }
+        }else if(command === "Flip"){
+            let [mode, startIndex, endIndex] = args;
+            startIndex = Number(startIndex);
+            endIndex = Number(endIndex);
+            if(mode === "Upper"){
+                let firstPart = rawKey.substring(0, startIndex);
+                let secondPart = rawKey.substring(startIndex, endIndex);
+                let thirdPart = rawKey.substring(endIndex);
 
 
+                rawKey = firstPart + secondPart.toUpperCase() + thirdPart;
+            }else{
+                let firstPart = rawKey.substring(0, startIndex);
+                let secondPart = rawKey.substring(startIndex, endIndex);
+                let thirdPart = rawKey.substring(endIndex);
+
+                rawKey = firstPart + secondPart.toLowerCase() + thirdPart;
+            }
+            
+            console.log(rawKey);
+        }else if(command === "Slice"){
+            let [startIndex, endIndex] = args;
+            startIndex = Number(startIndex);
+            endIndex = Number(endIndex);
+
+            let firstPart = rawKey.substring(0, startIndex);
+            let secondPart = rawKey.substring(startIndex, endIndex);
+            let thirdPart = rawKey.substring(endIndex);
+
+            rawKey = firstPart + thirdPart;
+            console.log(rawKey);
+        }
+    }
+    console.log(`Your activation key is: ${rawKey}`);
+}
+
+
+
+
+activationKeys([
+  '134softsf5ftuni2020rockz42',
+  'Slice>>>3>>>7',
+  'Contains>>>-rock',
+  'Contains>>>-uni-',
+  'Contains>>>-rocks',
+  'Flip>>>Upper>>>2>>>8',
+  'Flip>>>Lower>>>5>>>11',
+  'Generate'
+])
+
+
+//One more way to solve.
+
+
+function activationKeysTEST(input) {
     let actions = {
         Contains(key, string) {
             if (key.includes(string)) {
@@ -38,7 +103,6 @@ function keys(input) {
                 console.log(`Substring not found!`);
             }
             return key;
-
         },
 
         Flip(key, mode, startIndex, endIndex) {
@@ -68,31 +132,13 @@ function keys(input) {
 
             console.log(result);
             return result;
-
         }
-
     }
     let key = input.shift();
     let line;
-
     while ((line = input.shift()) !== "Generate") {
         let [actionName, ...args] = line.split(">>>");
-
         key = actions[actionName](key, ...args);
     }
-
     console.log(`Your activation key is: ` + key);
 }
-
-
-
-
-keys([
-    'abcdefghijklmnopqrstuvwxyz',
-    'Slice>>>2>>>6',
-    'Flip>>>Upper>>>3>>>14',
-    'Flip>>>Lower>>>5>>>7',
-    'Contains>>>def',
-    'Contains>>>deF',
-    'Generate'
-])

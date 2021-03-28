@@ -27,9 +27,46 @@
 // Constraints
 // There will always be at least one digit in the text!
 
+function emojiDetector(input){
+    let text = input[0];
+    let regex = /(::|\*\*)[A-Z][a-z]{2,}\1/g
+    let numbersPattern = /\d/g
+
+    let numbers = text.match(numbersPattern);
+    numbers.map(Number);
+    coolThreshold = 1;
+    numbers.forEach(x => coolThreshold *= x);
+
+    console.log(`Cool threshold: ${coolThreshold}`);
+
+    let emojis = text.match(regex);
+    console.log(`${emojis.length} emojis found in the text. The cool ones are:`);
+    for (let emoji of emojis) {
+        let word = emoji.slice(2, -2);
+        let emojiCoolness = 0;
+
+        for(let i = 0; i < word.length; i++){
+            emojiCoolness += word.charCodeAt(i);
+        }
+
+        if(emojiCoolness > coolThreshold){
+            console.log(emoji);
+        }
+    }
+
+}
 
 
-function emojiDetector(input) {
+
+
+
+emojiDetector([
+    'In the Sofia Zoo there are 311 animals in total! ::Smiley:: This includes 3 **Tigers**, 1 ::Elephant:, 12 **Monk3ys**, a **Gorilla::, 5 ::fox:es: and 21 different types of :Snak::Es::. ::Mooning:: **Shy**'
+  ]);
+
+
+
+function emojiDetectorTest2(input) {
     let text = input[0];
     let numbersPattern = /\d/g;
 
@@ -58,12 +95,6 @@ function emojiDetector(input) {
         }
     }
 }
-
-
-
-emojiDetector([
-    'In the Sofia Zoo there are 311 animals in total! ::Smiley:: This includes 3 **Tigers**, 1 ::Elephant:, 12 **Monk3ys**, a **Gorilla::, 5 ::fox:es: and 21 different types of :Snak::Es::. ::Mooning:: **Shy**'
-]);
 
 
 

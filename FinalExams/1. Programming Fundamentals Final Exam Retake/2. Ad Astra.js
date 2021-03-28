@@ -39,8 +39,6 @@ function adAstra(input){
       console.log(`Item: ${items[i].item}, Best before: ${items[i].day}, Nutrition: ${items[i].cal}`);
   }
 
-
-
 }
 
 adAstra([
