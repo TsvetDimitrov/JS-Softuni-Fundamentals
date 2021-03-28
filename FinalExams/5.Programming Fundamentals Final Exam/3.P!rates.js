@@ -203,8 +203,6 @@ pirates([
             console.log(`${cityName} -> Population: ${people} citizens, Gold: ${gold} kg`)
         }
     }
-    
-
 
     function sortCities(a, b){
         let [aCityName, aCityInfo] = a;
