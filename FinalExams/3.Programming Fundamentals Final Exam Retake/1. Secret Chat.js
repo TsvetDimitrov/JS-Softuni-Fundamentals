@@ -20,51 +20,54 @@
 // •	After the "Reveal" command is received, print this message:
 // "You have a new text message: {message}"
 
-
-
-
 function secretChat(input) {
 
-  let text = input.shift();
+  let message = input.shift();
   let line;
 
-
-  while ((line = input.shift()) !== `Reveal`) {
-
+  while ((line = input.shift()) !== "Reveal") {
     let [command, ...args] = line.split(":|:");
 
 
-    if (command == "ChangeAll") {
-      let [textTochange, replacement] = args;
+    if (command === "ChangeAll") {
+      let [substring, replacement] = args;
 
-      let i = text.indexOf(textTochange);
 
-      while (i !== -1) {
-        text = text.substring(0, i) + replacement + text.substring(i + textTochange.length);
-        i = text.indexOf(textTochange);
-      }
+      let regex = new RegExp(substring, 'g');
+
+      message = message.replace(regex, replacement);
+      // This is the same as with regex;
+      // let i = message.indexOf(substring);
+
+      // while(i !== -1){
+      //   message = message.substring(0, i) + replacement + message.substring( i + substring.length);
+      //   i = message.indexOf(substring);
+      // }
     } else if (command === "InsertSpace") {
-
-      text = text.substring(0, args) + " " + text.substring(args);
-
+      let index = args;
+      message = message.substring(0, index) + " " + message.substring(index);
     } else if (command === "Reverse") {
 
-      if (text.includes(args)) {
+      if (message.includes(args)) {
         let a = args[0];
-        let i = text.indexOf(a);
+        let i = message.indexOf(a);
+
         let reversed = a.split("").reverse().join("");
-        text = text.substring(0, i) + text.substring(i + a.length) + reversed;
+        message = message.substring(0, i) + message.substring(i + a.length) + reversed;
       } else {
         console.log("error");
         continue;
       }
     }
 
-    console.log(text);
-
+    console.log(message);
   }
-  console.log(`You have a new text message: ${text}`);
+
+  console.log(`You have a new text message: ${message}`);
 }
+
+
+
 
 secretChat([
   'heVVodar!gniV',

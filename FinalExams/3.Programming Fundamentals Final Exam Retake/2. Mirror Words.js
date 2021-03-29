@@ -23,11 +23,38 @@
 // •	If there are pairs of mirror words, print them in the end, each pair separated by ", ".
 // •	Each pair of mirror word must be printed with " <=> " between the words.
 
-
-
 function mirrorWords(input){
+    let string = input.shift();
+
+    let regex = /(@|#)[A-Za-z]{3,}\1\1[A-Za-z]{3,}\1/g
+
+    let matches = string.match(regex);
+    console.log(matches);
+    if(matches !== null){
+        for (let match of matches) {
+           
+            let words = match.split(match[0]).filter(x => x != "");
+            
+           
+        }
+
+    }else{
+        console.log("No word pairs found!");
+    }
+}
+
+
+
+
+mirrorWords([
+    '@mix#tix3dj#poOl##loOp#wl@@bong&song%4very$long@thong#Part##traP##@@leveL@@Level@##car#rac##tu@pack@@ckap@#rr#sAw##wAs#r#@w1r'
+  ]);
+
+
+
+  function mirrorWordsTEST(input){
     let str = input[0];
-    let regex = /([@#])[A-Za-z]{3,}\1\1[A-Za-z]{3,}\1/g
+    let regex = /(@|#)[A-Za-z]{3,}\1\1[A-Za-z]{3,}\1/g   // or: /([@#])[A-Za-z]{3,}\1\1[A-Za-z]{3,}\1/g
 
     let matches = str.match(regex);
     let mirrorWords = [];
@@ -56,8 +83,3 @@ function mirrorWords(input){
         console.log(`No mirror words!`);
     }
 }
-
-
-mirrorWords([
-    `#lol#lol# @#God@@doG@# #abC@@Cba# @Xyu@#uyX#`
-  ]);
