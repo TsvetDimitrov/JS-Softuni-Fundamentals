@@ -24,26 +24,41 @@
 
 
 
-
 function fancyBarcodes(input){
-input.shift();
-let regex = /(@#{1,})([A-Z][A-Za-z\d]{4,}[A-Z])(@#{1,})/
+  input.shift();
 
-    input.forEach(element => {
-        if(regex.test(element)){
-            let tokens = regex.exec(element);
-            let barcode = tokens[2];
-            let numbers = [...barcode].filter(symbol => /\d/.test(symbol)).join("");
+  let regex =  /(@#{1,})([A-Z][A-Za-z\d]{4,}[A-Z])(@#{1,})/
+  input.forEach(element => {
+    if(regex.test(element)){
+        let tokens = regex.exec(element);
+        console.log(tokens);
+    }
 
+  })
 
-            let productGroup = numbers === "" ? "00" : numbers;
-            console.log(`Product group: ${productGroup}`);
-        }else{
-            console.log("Invalid barcode");
-        }
-    });
 }
 
 
 
 fancyBarcodes([ '3', '@#FreshFisH@#', '@###Brea0D@###', '@##Che46sE@##' ]);
+
+
+
+function fancyBarcodesTEST(input){
+    input.shift();
+    let regex =  /(@#{1,})([A-Z][A-Za-z\d]{4,}[A-Z])(@#{1,})/
+    
+        input.forEach(element => {
+            if(regex.test(element)){
+                let tokens = regex.exec(element);
+                let barcode = tokens[2];
+                let numbers = [...barcode].filter(symbol => /\d/.test(symbol)).join("");
+    
+    
+                let productGroup = numbers === "" ? "00" : numbers;
+                console.log(`Product group: ${productGroup}`);
+            }else{
+                console.log("Invalid barcode");
+            }
+        });
+    }

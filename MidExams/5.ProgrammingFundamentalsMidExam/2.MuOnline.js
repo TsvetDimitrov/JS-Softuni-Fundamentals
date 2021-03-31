@@ -21,39 +21,39 @@
 
 
 
-function muOnline(...input){
+function muOnline(...input) {
     let rooms = input.shift().split("|");
     let health = 100;
     let coins = 0;
     let room = 0;
     let dead = false;
-    for(let i = 0; i <rooms.length; i++){
+    for (let i = 0; i < rooms.length; i++) {
         let command = rooms[i];
         let splitted = command.split(" ");
         room++;
 
-        if(splitted[0] === "potion"){
+        if (splitted[0] === "potion") {
             let currentHealth = 0;
-            if(Number(splitted[1]) + health > 100){
+            if (Number(splitted[1]) + health > 100) {
                 currentHealth = 100 - health;
-                health = 100; 
-                
-            }else{
+                health = 100;
+
+            } else {
                 currentHealth = splitted[1];
-                health+= Number(splitted[1]);
-                
+                health += Number(splitted[1]);
+
             }
             console.log(`You healed for ${currentHealth} hp.`);
             console.log(`Current health: ${health} hp.`);
-        }else if(splitted[0] === "chest"){
+        } else if (splitted[0] === "chest") {
             coins += Number(splitted[1]);
             console.log(`You found ${Number(splitted[1])} bitcoins.`);
-        }else{
+        } else {
             health -= Number(splitted[1]);
-            if(health > 0){
+            if (health > 0) {
                 console.log(`You slayed ${splitted[0]}.`);
-                
-            }else{
+
+            } else {
                 console.log(`You died! Killed by ${splitted[0]}.`);
                 console.log(`Best room: ${room}`);
                 dead = true;
@@ -61,16 +61,13 @@ function muOnline(...input){
             }
         }
     }
-    if(!dead){
+    if (!dead) {
         console.log(`You've made it!`);
         console.log(`Bitcoins: ${coins}`);
         console.log(`Health: ${health}`);
     }
-    
-    
-
 }
 
 
-muOnline('cat 10|potion 30|orc 10|chest 10|snake 25|chest 110' );
+muOnline('cat 10|potion 30|orc 10|chest 10|snake 25|chest 110');
 

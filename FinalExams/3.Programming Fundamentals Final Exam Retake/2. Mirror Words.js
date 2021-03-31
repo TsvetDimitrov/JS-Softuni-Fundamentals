@@ -29,17 +29,29 @@ function mirrorWords(input){
     let regex = /(@|#)[A-Za-z]{3,}\1\1[A-Za-z]{3,}\1/g
 
     let matches = string.match(regex);
-    console.log(matches);
+
+    let mirrorWords = [];
     if(matches !== null){
+        console.log(`${matches.length} word pairs found!`);
         for (let match of matches) {
            
             let words = match.split(match[0]).filter(x => x != "");
-            
-           
-        }
+            let isMirror = words[0] === words[1].split("").reverse().join("");
 
+            if(isMirror){
+                mirrorWords.push(`${words[0]} <=> ${words[1]}`);
+            }
+        }
     }else{
         console.log("No word pairs found!");
+    }
+
+
+    if(mirrorWords.length === 0){
+        console.log("No mirror words!");
+    }else{
+        console.log("The mirror words are:");
+        console.log(mirrorWords.join(", "));
     }
 }
 

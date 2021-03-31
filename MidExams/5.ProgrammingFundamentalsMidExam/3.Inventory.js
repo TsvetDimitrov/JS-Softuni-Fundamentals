@@ -11,42 +11,39 @@
 // Output
 // After receiving "Craft!" print the items in your inventory, separated by ", " (comma and space).
 
-function inventory (arr){
+function inventory(arr) {
     let items = arr.shift().split(", ");
-    let commands =  arr.shift().split(" - ");
+    let commands = arr.shift().split(" - ");
 
-    while(commands != "Craft!"){
-        
-        if(commands[0] === "Collect" && items.includes(commands[1]) == false){
+    while (commands != "Craft!") {
+
+        if (commands[0] === "Collect" && items.includes(commands[1]) == false) {
             items.push(commands[1]);
-        }else if(commands[0] === "Drop" && items.includes(commands[1])){
+        } else if (commands[0] === "Drop" && items.includes(commands[1])) {
             let index = items.indexOf(commands[1]);
             items.splice(index, 1);
-        }else if(commands[0] === "Combine Items"){
+        } else if (commands[0] === "Combine Items") {
             let combine = commands[1].split(":");
             let item = combine[0];
 
-            if(items.includes(item)){
+            if (items.includes(item)) {
                 let renewed = combine[1];
                 let index = items.indexOf(item);
-                items.splice(index + 1,0,renewed);
+                items.splice(index + 1, 0, renewed);
             }
-        }else if(commands[0] === "Renew" && items.includes(commands[1])){
+        } else if (commands[0] === "Renew" && items.includes(commands[1])) {
             let index = items.indexOf(commands[1]);
-            let renewed =  items.splice(index,1);
+            let renewed = items.splice(index, 1);
             items.push(renewed);
         }
 
 
-        
+
         commands = arr.shift().split(" - ");
     }
     console.log(items.join(", "));
-
-
-    
 }
 
 
-inventory([ 'Iron, Wood, Sword', 'Collect - Gold', 'Drop - Wood', 'Craft!' ]
-  );
+inventory(['Iron, Wood, Sword', 'Collect - Gold', 'Drop - Wood', 'Craft!']
+);
