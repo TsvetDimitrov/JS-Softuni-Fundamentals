@@ -31,11 +31,17 @@ function fancyBarcodes(input){
   input.forEach(element => {
     if(regex.test(element)){
         let tokens = regex.exec(element);
-        console.log(tokens);
+        let word = tokens[2];
+
+        let numbersInWord = [...word].filter(symbol => /\d/.test(symbol)).join("");
+
+        let productGroup = numbersInWord === "" ? "00" : numbersInWord;
+
+        console.log(`Product group: ${productGroup}`);
+    }else{
+        console.log("Invalid barcode");
     }
-
-  })
-
+  });
 }
 
 

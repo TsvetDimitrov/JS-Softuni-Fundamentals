@@ -44,10 +44,101 @@
 
 
 function heroesOfCodeAndLogic(input) {
+    let n = Number(input.shift());
+    let heroes = {};
 
+    for (let i = 0; i < n; i++) {
+        let [hero, hp, mp] = input.shift().split(" ");
+        hp = Number(hp);
+        mp = Number(mp);
+
+
+        if (!heroes.hasOwnProperty(hero)) {
+            heroes[hero] = { hp, mp };
+        }
+    }
+
+    let line;
+    while ((line = input.shift()) !== "End") {
+        let [command, heroName, ...args] = line.split(" - ");
+
+        if (command === "CastSpell") {
+            let [mpNeeded, spellName] = args;
+            mpNeeded = Number(mpNeeded);
+
+            if (heroes[heroName].mp >= mpNeeded) {
+                heroes[heroName].mp -= mpNeeded;
+                console.log(`${heroName} has successfully cast ${spellName} and now has ${heroes[heroName].mp} MP!`);
+            } else {
+                console.log(`${heroName} does not have enough MP to cast ${spellName}!`);
+            }
+        } else if (command === "TakeDamage") {
+            let [damage, attacker] = args;
+            damage = Number(damage);
+
+            heroes[heroName].hp -= damage;
+
+            if (heroes[heroName].hp > 0) {
+
+                console.log(`${heroName} was hit for ${damage} HP by ${attacker} and now has ${heroes[heroName].hp} HP left!`);
+            } else {
+                console.log(`${heroName} has been killed by ${attacker}!`);
+                delete heroes[heroName];
+            }
+        } else if (command === "Recharge") {
+            let amount = Number(args);
+
+            let valueRecharged = heroes[heroName].mp + amount > 200 ? 200 - heroes[heroName].mp : amount;
+            heroes[heroName].mp += valueRecharged;
+
+            console.log(`${heroName} recharged for ${valueRecharged} MP!`);
+        } else if (command === "Heal") {
+            let amount = Number(args);
+            let valueRecharged = heroes[heroName].hp + amount > 100 ? 100 - heroes[heroName].hp : amount;
+            heroes[heroName].hp += valueRecharged;
+
+            console.log(`${heroName} healed for ${valueRecharged} HP!`);
+        }
+    }
+
+    let sortedHeroes = Object.entries(heroes).sort(sortHeroes);
+
+    for (const hero of sortedHeroes) {
+        console.log(hero[0]);
+        console.log(`  HP: ${hero[1].hp}`);
+        console.log(`  MP: ${hero[1].mp}`);
+    }
+
+    function sortHeroes (a, b){
+        let [aName, aInfo] = a;
+        let [bName, bInfo] = b;
+
+        let sortedByhpDescending = bInfo.hp - aInfo.hp;
+
+        if(sortedByhpDescending == 0){
+            return aName.localeCompare(bName);
+        }
+        return sortedByhpDescending;
+    }
+}
+
+
+
+heroesOfCodeAndLogic([
+    '2',
+    'Solmyr 85 120',
+    'Kyrre 99 50',
+    'Heal - Solmyr - 10',
+    'Recharge - Solmyr - 50',
+    'TakeDamage - Kyrre - 66 - Orc',
+    'CastSpell - Kyrre - 15 - ViewEarth',
+    'End'
+  ]);
+
+  //Another solution.
+
+function heroesOfCodeAndLogicTEST(input) {
     heroes = {};
-
-
     n = Number(input.shift());
     input.splice(0, n).forEach(line => {
         let [heroName, hp, mp] = line.split(" ");
@@ -59,23 +150,22 @@ function heroesOfCodeAndLogic(input) {
     });
 
     let commandParser = {
-        "CastSpell" : CastSpell,
-        "Recharge" : Recharge,
-        "TakeDamage" : TakeDamage,
-        "Heal" : Heal
+        "CastSpell": CastSpell,
+        "Recharge": Recharge,
+        "TakeDamage": TakeDamage,
+        "Heal": Heal
     }
     input.forEach(line => {
         let [command, ...tokens] = line.split(" - ");
-       
+
 
         if (command !== "End") {
-           let func = commandParser[command];
-           console.log(func(heroes, ...tokens)); //Using The object for the functions bellow. 
+            let func = commandParser[command];
+            console.log(func(heroes, ...tokens)); //Using The object for the functions bellow. 
         }
     });
 
     let sortedHeroes = Object.entries(heroes).sort(compareHeroes);
-
 
     for (let [heroName, heroInfo] of sortedHeroes) {
         let { hp, mp } = heroInfo;
@@ -89,33 +179,26 @@ function heroesOfCodeAndLogic(input) {
     function compareHeroes(a, b) {
         let [aHero, aInfo] = a;
         let [bHero, bInfo] = b;
-
         let byHealthDescending = bInfo.hp - aInfo.hp;
 
         if (byHealthDescending === 0) {
             return aHero.localeCompare(bHero);
         }
-
-
         return byHealthDescending;
     }
-
 
     function CastSpell(heroes, heroName, mpNeeded, spellName) {
         let hero = heroes[heroName];
         mpNeeded = Number(mpNeeded);
-
         if (hero.mp >= mpNeeded) {
             hero.mp -= mpNeeded;
             return `${heroName} has successfully cast ${spellName} and now has ${hero.mp} MP!`
         }
-
         return `${heroName} does not have enough MP to cast ${spellName}!`;
     }
 
 
     function TakeDamage(heroes, heroName, damage, attacker) {
-
         let hero = heroes[heroName];
         damage = Number(damage);
         hero.hp -= damage;
@@ -151,20 +234,3 @@ function heroesOfCodeAndLogic(input) {
 
     }
 }
-
-
-
-
-heroesOfCodeAndLogic([
-    '4',
-    'Adela 90 150',
-    'SirMullich 70 40',
-    'Ivor 1 111',
-    'Tyris 94 61',
-    'Heal - SirMullich - 50',
-    'Recharge - Adela - 100',
-    'CastSpell - Tyris - 1000 - Fireball',
-    'TakeDamage - Tyris - 99 - Fireball',
-    'TakeDamage - Ivor - 3 - Mosquito',
-    'End'
-  ]);

@@ -26,7 +26,7 @@
 function adAstra(input){
     let string = input.shift();
     let items = [];
-    let pattern = /([|#])(?<name>[A-Za-z\s]+)\1(?<date>\d{2}\/\d{2}\/\d{2})\1(?<calories>\d{1,5})\1/g;
+    let pattern = /([\|\#])(?<name>[A-Za-z\s]+)\1(?<date>\d{2}\/\d{2}\/\d{2})\1(?<calories>\d{1,5})\1/g;
     let totalCal = 0;
     let regex = pattern.exec(string);
     while(regex){
