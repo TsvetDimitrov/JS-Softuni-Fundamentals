@@ -15,8 +15,36 @@
 // •	Print the messages described above
 
 
-
 function destinationMapper(string){
+    let pattern = /(=|\/)([A-Z][A-Za-z]{2,})\1/g
+
+    let city = [];
+    let count =0;
+
+
+    if(pattern.test(string)){
+        let destinations = string.match(pattern);
+
+
+        destinations.forEach(dest => {
+            count += (dest.length - 2);
+
+            city.push(dest.slice(1, -1));
+        });
+    }
+
+    console.log(`Destinations: ${city.join(", ")}`);
+    console.log(`Travel Points: ${count}`); 
+}
+
+
+
+destinationMapper(`=Hawai=/Cyprus/=Invalid/invalid==i5valid=/I5valid/=i=`);
+
+
+
+
+function destinationMapperTEST(string){
 
     let regex = /(=|\/)(?<location>[A-Z][A-Za-z]{2,})\1/g;
 
@@ -28,7 +56,7 @@ function destinationMapper(string){
 
         ourDestination.forEach(dest => {
             count += (dest.length - 2);                     //We subtract 2, because we have 2 special symbols in the match. 
-            city.push(dest.slice(1, (dest.length - 1)));
+            city.push(dest.slice(1, (dest.length - 1)));    //OR dest.slice(1, -1); It is the same as dest.slice(1, (dest.length -1));
         });
     }
 
@@ -36,5 +64,3 @@ function destinationMapper(string){
     console.log(`Destinations: ${city.join(", ")}`);
     console.log(`Travel Points: ${count}`);
 }
-
-destinationMapper(`=Hawai=/Cyprus/=Invalid/invalid==i5valid=/I5valid/=i=`);
