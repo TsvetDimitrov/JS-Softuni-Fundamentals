@@ -26,41 +26,42 @@
 // •	After the "Generate" command is received, print:
 // o	"Your activation key is: {activation key}"
 
-function activationKeys(input){
+
+function activationKeys(input) {
     let rawKey = input.shift();
 
     let line;
-    while((line = input.shift()) !== "Generate"){
+    while ((line = input.shift()) !== "Generate") {
         let [command, ...args] = line.split(">>>");
 
-        if(command === "Contains"){
+        if (command === "Contains") {
             let substring = args;
-            if(rawKey.includes(substring)){
+            if (rawKey.includes(substring)) {
                 console.log(`${rawKey} contains ${substring}`);
-            }else{
+            } else {
                 console.log("Substring not found!");
             }
-        }else if(command === "Flip"){
+        } else if (command === "Flip") {
             let [mode, startIndex, endIndex] = args;
             startIndex = Number(startIndex);
             endIndex = Number(endIndex);
-            if(mode === "Upper"){
+            if (mode === "Upper") {
                 let firstPart = rawKey.substring(0, startIndex);
                 let secondPart = rawKey.substring(startIndex, endIndex);
                 let thirdPart = rawKey.substring(endIndex);
 
 
                 rawKey = firstPart + secondPart.toUpperCase() + thirdPart;
-            }else{
+            } else {
                 let firstPart = rawKey.substring(0, startIndex);
                 let secondPart = rawKey.substring(startIndex, endIndex);
                 let thirdPart = rawKey.substring(endIndex);
 
                 rawKey = firstPart + secondPart.toLowerCase() + thirdPart;
             }
-            
+
             console.log(rawKey);
-        }else if(command === "Slice"){
+        } else if (command === "Slice") {
             let [startIndex, endIndex] = args;
             startIndex = Number(startIndex);
             endIndex = Number(endIndex);
@@ -78,17 +79,18 @@ function activationKeys(input){
 
 
 
-
 activationKeys([
-  '134softsf5ftuni2020rockz42',
-  'Slice>>>3>>>7',
-  'Contains>>>-rock',
-  'Contains>>>-uni-',
-  'Contains>>>-rocks',
-  'Flip>>>Upper>>>2>>>8',
-  'Flip>>>Lower>>>5>>>11',
-  'Generate'
-])
+    'abcdefghijklmnopqrstuvwxyz',
+    'Slice>>>2>>>6',
+    'Flip>>>Upper>>>3>>>14',
+    'Flip>>>Lower>>>5>>>7',
+    'Contains>>>def',
+    'Contains>>>deF',
+    'Generate'
+  ])
+
+
+
 
 
 //One more way to solve.

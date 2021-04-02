@@ -27,45 +27,6 @@
 // Constraints
 // There will always be at least one digit in the text!
 
-function emojiDetector(input){
-    let text = input[0];
-    let regex = /(::|\*\*)[A-Z][a-z]{2,}\1/g
-    let numbersPattern = /\d/g
-
-    let numbers = text.match(numbersPattern);
-    numbers.map(Number);
-    coolThreshold = 1;
-    numbers.forEach(x => coolThreshold *= x);
-
-    console.log(`Cool threshold: ${coolThreshold}`);
-
-    let emojis = text.match(regex);
-    console.log(`${emojis.length} emojis found in the text. The cool ones are:`);
-    for (let emoji of emojis) {
-        let word = emoji.slice(2, -2);
-        let emojiCoolness = 0;
-
-        for(let i = 0; i < word.length; i++){
-            emojiCoolness += word.charCodeAt(i);
-        }
-
-        if(emojiCoolness > coolThreshold){
-            console.log(emoji);
-        }
-    }
-
-}
-
-
-
-
-
-emojiDetector([
-    'In the Sofia Zoo there are 311 animals in total! ::Smiley:: This includes 3 **Tigers**, 1 ::Elephant:, 12 **Monk3ys**, a **Gorilla::, 5 ::fox:es: and 21 different types of :Snak::Es::. ::Mooning:: **Shy**'
-  ]);
-
-
-
 function emojiDetectorTest2(input) {
     let text = input[0];
     let numbersPattern = /\d/g;
@@ -95,6 +56,18 @@ function emojiDetectorTest2(input) {
         }
     }
 }
+
+
+
+
+
+emojiDetector([
+    "It is a long established fact that 1 a reader will be distracted by 9 the readable content of a page when looking at its layout. The point of using ::LoremIpsum:: is that it has a more-or-less normal 3 distribution of 8 letters, as opposed to using 'Content here, content 99 here', making it look like readable **English**."
+  ]);
+
+
+
+
 
 
 
@@ -142,17 +115,12 @@ function emojiDetectorTest(input){
 
     }
 
-
     function sumAscii(text){
         text = text.split("");
-
         let sum = 0;
-
         for (char of text) {
             sum += char.charCodeAt(0);
         }
-
-
         return sum;
     }
 }

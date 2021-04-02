@@ -20,15 +20,105 @@
 // •	Print the information about all plants as described above
 
 
-
 function plantDiscovery(input) {
+
+    let n = Number(input.shift());
+    let plants = {};
+    for (let i = 0; i < n; i++) {
+        let [plant, rarity] = input.shift().split("<->");
+        rarity = Number(rarity);
+        plants[plant] = { rarity, ratings: [] };
+
+    }
+
+
+    let line;
+    while ((line = input.shift()) !== "Exhibition") {
+
+        let [command, ...args] = line.split(": ");
+
+        if (command === "Rate") {
+            let [plant, rating] = args.shift().split(" - ");
+            if (plants.hasOwnProperty(plant)) {
+                rating = Number(rating);
+                plants[plant].ratings.push(rating);
+            } else {
+                console.log("error");
+            }
+        } else if (command === "Update") {
+            let [plant, newRarity] = args.shift().split(" - ");
+            if (plants.hasOwnProperty(plant)) {
+                newRarity = Number(newRarity);
+
+                plants[plant].rarity = newRarity;
+
+            } else {
+                console.log(`error`);
+            }
+
+        } else if (command === "Reset") {
+            let plant = args;
+            if (plants.hasOwnProperty(plant)) {
+                plants[plant].ratings = [];
+            } else {
+                console.log(`error`);
+            }
+        } else {
+            console.log("error");
+        }
+    }
+
+    let sortedPlants = Object.entries(plants).sort(sortPlants);
+    console.log(`Plants for the exhibition:`);
+    for (const plant of sortedPlants) {
+        let averageRating = 0;
+        if (plant[1].ratings.length > 0) {
+            averageRating = plant[1].ratings.reduce((a, b) => a + b, 0) / plant[1].ratings.length;
+
+        }
+        console.log(` - ${plant[0]}; Rarity: ${plant[1].rarity}; Rating: ${averageRating.toFixed(2)}`);
+    }
+
+    function sortPlants(a, b) {
+        let [aName, aInfo] = a;
+        let [bName, bInfo] = b;
+
+        let sortedByRarityDescending = bInfo.rarity - aInfo.rarity;
+
+        if (sortedByRarityDescending == 0) {
+            return (bInfo.ratings.reduce((a, b) => a + b, 0) / bInfo.ratings.length) -
+                (aInfo.ratings.reduce((a, b) => a + b, 0) / aInfo.ratings.length);
+        }
+        return sortedByRarityDescending;
+    }
+}
+
+
+
+
+plantDiscovery([
+    '3',
+    'Arnoldii<->4',
+    'Woodii<->7',
+    'Welwitschia<->2',
+    'Rate: Woodii - 10',
+    'Rate: Welwitschia - 7',
+    'Rate: Arnoldii - 3',
+    'Rate: Woodii - 5',
+    'Update: Woodii - 5',
+    'Reset: Arnoldii',
+    'Exhibition'
+]);
+
+// Another solution
+function plantDiscoveryTEST(input) {
     let plants = {};
 
     input.splice(0, Number(input.shift())).forEach((element) => {
         let [plant, rarity] = element.split('<->');
         rarity = Number(rarity);
 
-        plants[plant] = { rarity, ratings:[] };
+        plants[plant] = { rarity, ratings: [] };
     });
 
     const commandsParser = {
@@ -70,44 +160,29 @@ function plantDiscovery(input) {
 
     console.log('Plants for the exhibition:')
     Object.entries(plants)
-    .sort(comparePlants)
-    .forEach(([plantName, plantInfo]) => {
-        let averageRating = 0;
-        if (plantInfo.ratings.length > 0) {
-            averageRating = plantInfo.ratings.reduce((acc, value) => acc + value,0) / plantInfo.ratings.length;
-        }
-        console.log(`- ${plantName}; Rarity: ${plantInfo.rarity}; Rating: ${averageRating.toFixed(2)}`);
-    });
+        .sort(comparePlants)
+        .forEach(([plantName, plantInfo]) => {
+            let averageRating = 0;
+            if (plantInfo.ratings.length > 0) {
+                averageRating = plantInfo.ratings.reduce((acc, value) => acc + value, 0) / plantInfo.ratings.length;
+            }
+            console.log(`- ${plantName}; Rarity: ${plantInfo.rarity}; Rating: ${averageRating.toFixed(2)}`);
+        });
 
 
 
-    function comparePlants(a, b){
+    function comparePlants(a, b) {
         let [aPlant, aInfo] = a;
         let [bPlant, bInfo] = b;
 
         let byRarityDescending = bInfo.rarity - aInfo.rarity;
 
-        if(byRarityDescending === 0){
-            return (bInfo.ratings.reduce((acc, value) => acc + value, 0) / bInfo.ratings.length) - 
-            (aInfo.ratings.reduce((acc, value) => acc + value, 0) / aInfo.ratings.length);
+        if (byRarityDescending === 0) {
+            return (bInfo.ratings.reduce((acc, value) => acc + value, 0) / bInfo.ratings.length) -
+                (aInfo.ratings.reduce((acc, value) => acc + value, 0) / aInfo.ratings.length);
 
         }
 
         return byRarityDescending;
     }
 }
-
-
-plantDiscovery([
-    '3',
-    'Arnoldii<->4',
-    'Woodii<->7',
-    'Welwitschia<->2',
-    'Rate: Woodii - 10',
-    'Rate: Welwitschia - 7',
-    'Rate: Arnoldii - 3',
-    'Rate: Woodii - 5',
-    'Update: Woodii - 5',
-    'Reset: Arnoldii',
-    'Exhibition'
-  ]);

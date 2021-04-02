@@ -41,6 +41,7 @@
 // will never be negative or exceed the respective limits.
 // •	The town names in the events will always be valid towns that should be on your list.
 
+
 function pirates(input) {
     let cities = {};
     let line;
@@ -57,8 +58,6 @@ function pirates(input) {
         cities[city].population += population;
         cities[city].gold += gold;
     }
-    
-
 
     while ((line = input.shift()) !== "End") {
         let [command, town, ...args] = line.split("=>");
@@ -91,35 +90,28 @@ function pirates(input) {
     }
 
     let sortedCities = Object.entries(cities).sort(sortingCities);
-    if(sortedCities.length === 0){
+    if (sortedCities.length === 0) {
         console.log("Ahoy, Captain! All targets have been plundered and destroyed!")
-    }else{
+    } else {
         console.log(`Ahoy, Captain! There are ${sortedCities.length} wealthy settlements to go to:`)
         for (let town of sortedCities) {
             console.log(`${town[0]} -> Population: ${town[1].population} citizens, Gold: ${town[1].gold} kg`);
         }
     }
-    
-    
-    function sortingCities(a, b){
+
+    function sortingCities(a, b) {
         let [aName, aInfo] = a;
         let [bName, bInfo] = b;
 
         let sortedByGold = bInfo.gold - aInfo.gold;
 
-        if(sortedByGold === 0){
+        if (sortedByGold === 0) {
             return aName.localeCompare(bName);
         }
 
         return sortedByGold;
     }
 }
-
-
-
-
-
-
 
 
 pirates([
@@ -130,10 +122,10 @@ pirates([
     'Plunder=>Tortuga=>75000=>380',
     'Prosper=>Santo Domingo=>180',
     'End'
-  ]);
+]);
 
 
-  // Another Solution
+// Another Solution
 
 function piratesSolution1(input) {
     let actions = {

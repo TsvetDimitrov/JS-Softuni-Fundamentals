@@ -14,49 +14,49 @@
 // •	Print the proper output messages in the proper cases as described in the problem description
 
 
-
-function worldTour(input) {
+function worldTour(input){
     let stops = input.shift();
-
     let line;
-    while ((line = input.shift()) !== "Travel") {
-        [command, ...args] = line.split(":");
+    while((line = input.shift()) !== "Travel"){
+        let [command, ...args] = line.split(":");
 
-
-        if (command === "Add Stop") {
+        if(command === "Add Stop"){
             let [index, string] = args;
             index = Number(index);
 
-            if (index >= 0 && index <= stops.length) {
+            if(index >= 0 && index <= stops.length){
                 let firstPart = stops.substring(0, index);
+                
                 let thirdPart = stops.substring(index);
                 stops = firstPart + string + thirdPart;
-                
             }
-        } else if (command === "Remove Stop") {
+        }else if(command === "Remove Stop"){
             let [startIndex, endIndex] = args;
             startIndex = Number(startIndex);
             endIndex = Number(endIndex);
 
-            if (startIndex >= 0 && startIndex < stops.length && endIndex >= 0 && startIndex <= endIndex && endIndex < stops.length) {
-                let firstPart = stops.substring(0, startIndex);
-                let deleted = stops.substring(startIndex, endIndex);
-                let thirdPart = stops.substring(endIndex + 1);
+            if(startIndex >= 0 &&  startIndex <= endIndex &&  endIndex < stops.length){
+            let firstPart = stops.substring(0, startIndex);
+            let secondPart = stops.substring(startIndex, endIndex);
+            let thirdPart = stops.substring(endIndex+1);
 
-                stops = firstPart + thirdPart;
-                
+            stops = firstPart + thirdPart;
             }
-
-        } else if (command === "Switch") {
+        }else if(command === "Switch"){
             let [oldString, newString] = args;
-            let regex = new RegExp(oldString, 'g');
-            stops = stops.replace(regex, newString); 
+
+            if(stops.includes(oldString)){
+                let regex = new RegExp(oldString, 'g');
+
+                stops = stops.replace(regex, newString);
+            }
         }
+
         console.log(stops);
     }
-
     console.log(`Ready for world tour! Planned stops: ${stops}`);
 }
+
 
 
 
@@ -67,3 +67,44 @@ worldTour([
     'Switch:Hawai:Bulgaria',
     'Travel'
 ]);
+
+
+
+
+
+function worldTourTEST(input) {
+    let stops = input.shift();
+
+    let line;
+    while ((line = input.shift()) !== "Travel") {
+        [command, ...args] = line.split(":");
+
+
+        if (command === "Add Stop") {
+            let [index, string] = args;
+            index = Number(index);
+            if (index >= 0 && index <= stops.length) {
+                let firstPart = stops.substring(0, index);
+                let thirdPart = stops.substring(index);
+                stops = firstPart + string + thirdPart;
+
+            }
+        } else if (command === "Remove Stop") {
+            let [startIndex, endIndex] = args;
+            startIndex = Number(startIndex);
+            endIndex = Number(endIndex);
+            if (startIndex >= 0 && startIndex < stops.length && endIndex >= 0 && startIndex <= endIndex && endIndex < stops.length) {
+                let firstPart = stops.substring(0, startIndex);
+                let deleted = stops.substring(startIndex, endIndex);
+                let thirdPart = stops.substring(endIndex + 1);
+                stops = firstPart + thirdPart;
+            }
+        } else if (command === "Switch") {
+            let [oldString, newString] = args;
+            let regex = new RegExp(oldString, 'g');
+            stops = stops.replace(regex, newString);
+        }
+        console.log(stops);
+    }
+    console.log(`Ready for world tour! Planned stops: ${stops}`);
+}

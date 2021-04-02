@@ -14,33 +14,29 @@
 // Output
 // •	Print the messages described above
 
-
 function destinationMapper(string){
-    let pattern = /(=|\/)([A-Z][A-Za-z]{2,})\1/g
+    let regex = /(=|\/)([A-Z][A-Za-z]{2,})\1/g
 
-    let city = [];
-    let count =0;
+    let matches = string.match(regex);
+    let cities = [];
+    let count = 0;
 
-
-    if(pattern.test(string)){
-        let destinations = string.match(pattern);
-
-
-        destinations.forEach(dest => {
-            count += (dest.length - 2);
-
-            city.push(dest.slice(1, -1));
+    if(regex.test(string)){
+        matches.forEach(match => {
+            let city = match.slice(1,-1);
+            cities.push(city);
+            count += city.length; 
         });
     }
-
-    console.log(`Destinations: ${city.join(", ")}`);
-    console.log(`Travel Points: ${count}`); 
+    
+    console.log(`Destinations: ${cities.join(", ")}`);
+    console.log(`Travel Points: ${count}`);
 }
 
 
 
-destinationMapper(`=Hawai=/Cyprus/=Invalid/invalid==i5valid=/I5valid/=i=`);
 
+destinationMapper(`ThisIs some InvalidInput`);
 
 
 
@@ -64,3 +60,7 @@ function destinationMapperTEST(string){
     console.log(`Destinations: ${city.join(", ")}`);
     console.log(`Travel Points: ${count}`);
 }
+
+
+
+
