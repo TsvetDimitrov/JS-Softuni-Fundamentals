@@ -7,6 +7,7 @@
 // The input comes as an array of 4 numbers [width, height, x, y] which represents the dimensions of the matrix and the coordinates of the star.
 // Output
 // The output is the filled matrix, with the cells separated by a space, each row on a new line.
+// ·	Check if there is some dependency or relation between the position of the numbers and the rows and columns of those positions.
 
 
 function orbit(input) {
