@@ -16,7 +16,6 @@ function treasureFinder(input) {
     let curPosition = 0;
     let line;
     let regex = /&(?<type>.+)&[^<]*<(?<coord>.+)>/g
-    let modifiedLine;
     while ((line = input.shift()) !== "find") {
         let nums = line.split("");
         curPosition = 0;
