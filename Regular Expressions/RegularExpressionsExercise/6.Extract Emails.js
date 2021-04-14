@@ -20,12 +20,11 @@ function extractEmails(input){
     
     let line;
     while((line = input.shift()) !== "end"){
-        let matches = pattern.exec(line);
-        console.log(matches);
+        let matches = line.match(pattern);
+        for (const match of matches) {
+            console.log(match);
+        }
     }
-
-
-
 }
 
 
